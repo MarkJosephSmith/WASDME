@@ -36,7 +36,7 @@ public class PickupObject2 : MonoBehaviour
     void carry(GameObject o)
     {
         o.transform.position = Vector3.Lerp( o.transform.position, mainCamera.transform.position + mainCamera.transform.forward * distance, Time.deltaTime * smooth);
-        o.transform.rotation = Quaternion.identity;
+        o.transform.rotation = Quaternion.identity; //keeps it from spinning in air by resetting the rotation.
 
     }
 
@@ -60,6 +60,7 @@ public class PickupObject2 : MonoBehaviour
                     //p.gameObject.GetComponent<Rigidbody>().isKinematic = true;
 
                     p.gameObject.GetComponent<Rigidbody>().useGravity = false;
+                    p.isLifted = true;  /////////////////////////will need to set this for all jointed objects
 
                 }
             }
@@ -79,6 +80,8 @@ public class PickupObject2 : MonoBehaviour
         isCarrying = false;
         //carriedObject.GetComponent<Rigidbody>().isKinematic = false;
         carriedObject.GetComponent<Rigidbody>().useGravity = true;
+        liftable p = carriedObject.GetComponent<Collider>().GetComponent<liftable>();
+        p.isLifted = false;  ///////////////////////////////////will need to set this for all jointed objects
         carriedObject = null;
 
     }

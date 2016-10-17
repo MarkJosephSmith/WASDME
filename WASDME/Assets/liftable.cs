@@ -3,8 +3,12 @@ using System.Collections;
 
 public class liftable : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    public bool isLifted;
+
+    // Use this for initialization
+    void Start () {
+
+        isLifted = false;
 	
 	}
 	
