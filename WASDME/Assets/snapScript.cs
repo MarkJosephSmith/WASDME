@@ -68,16 +68,59 @@ public class snapScript : MonoBehaviour {
        //Vector3 testspace = o.transform.position - (offset * 2);
         myParent.transform.position = o.transform.position + (snapOffset * 2.0f);
         myParent.transform.rotation = o.transform.rotation;
-        FixedJoint joint = myParent.AddComponent<FixedJoint>();
+        ConfigurableJoint joint = myParent.AddComponent<ConfigurableJoint>();
         joint.connectedBody = o.GetComponent<Rigidbody>();
+        joint.configuredInWorldSpace = false;
+        joint.anchor = new Vector3(0, 0, 0);
+        joint.connectedAnchor = new Vector3(0, 0, 0);
+        joint.enableCollision = false;
+        joint.enablePreprocessing = true;
+        joint.xMotion = ConfigurableJointMotion.Locked;
+        joint.yMotion = ConfigurableJointMotion.Locked;
+        joint.zMotion = ConfigurableJointMotion.Locked;
+        joint.angularXMotion = ConfigurableJointMotion.Locked;
+        joint.angularYMotion = ConfigurableJointMotion.Locked;
+        joint.angularZMotion = ConfigurableJointMotion.Locked;
+        joint.linearLimit.limit.Equals(0.0f);
+        joint.linearLimit.bounciness.Equals(0.0f);
+        joint.linearLimit.contactDistance.Equals(0.0f);
+        joint.linearLimitSpring.spring.Equals(0.0f);
+        joint.linearLimitSpring.damper.Equals(0.0f);
+        joint.highAngularXLimit.limit.Equals(0.0f);
+        joint.lowAngularXLimit.limit.Equals(0.0f);
+        joint.highAngularXLimit.bounciness.Equals(0.0f);
+        joint.lowAngularXLimit.bounciness.Equals(0.0f);
+        joint.highAngularXLimit.contactDistance.Equals(0.0f);
+        joint.lowAngularXLimit.contactDistance.Equals(0.0f);
+
+
+        joint.angularYLimit.bounciness.Equals(0.0f);
+        joint.angularYLimit.limit.Equals(0.0f);
+        joint.angularYLimit.contactDistance.Equals(0.0f);
+
+        joint.angularZLimit.limit.Equals(0.0f);
+        joint.angularZLimit.bounciness.Equals(0.0f);
+        joint.angularZLimit.contactDistance.Equals(0.0f);
+
+        joint.angularYZLimitSpring.spring.Equals(0.0f);
+        joint.angularYZLimitSpring.damper.Equals(0.0f);
+
+        joint.targetVelocity.Equals(Vector3.zero);
+        joint.projectionAngle.Equals(0.1f);
+        joint.projectionDistance.Equals(0.1f);
+        //joint.projectionMode.Equals()
+        
+
+
+
         //joint.anchor = joint.anchor + snapOffset;
         //joint.connectedAnchor = joint.anchor;
-        
+
         //joint.anchor = joint.anchor + offset;
         //joint.connectedAnchor = joint.connectedAnchor - offset;
         //joint.enableCollision = true;
-        joint.breakForce = 100;//Mathf.Infinity;
-        joint.breakTorque = 100;//Mathf.Infinity;
+        joint.breakForce = Mathf.Infinity;
+        joint.breakTorque = Mathf.Infinity;
 
     }
 
