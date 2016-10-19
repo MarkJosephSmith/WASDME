@@ -65,14 +65,24 @@ public class snapScript : MonoBehaviour {
 
         GameObject o = theCollision.attachedRigidbody.gameObject;
         GameObject myParent = this.transform.parent.gameObject;
-       //Vector3 testspace = o.transform.position - (offset * 2);
-        myParent.transform.position = o.transform.position + (snapOffset * 2.0f);
+        //Vector3 testspace = o.transform.position - (offset * 2);
+
+
+        myParent.transform.position = o.transform.position + (snapOffset * 2.00f);
+        myParent.transform.rotation = o.transform.rotation;
+        //FixedJoint joint = myParent.AddComponent<FixedJoint>();
+        //joint.connectedBody = o.GetComponent<Rigidbody>();
+
+        o.GetComponent<Rigidbody>().useGravity = false;
+
+        
+        myParent.transform.position = o.transform.position + (snapOffset * 2.05f);
         myParent.transform.rotation = o.transform.rotation;
         ConfigurableJoint joint = myParent.AddComponent<ConfigurableJoint>();
         joint.connectedBody = o.GetComponent<Rigidbody>();
         joint.configuredInWorldSpace = false;
-        joint.anchor = new Vector3(0, 0, 0);
-        joint.connectedAnchor = new Vector3(0, 0, 0);
+        //joint.anchor = new Vector3(0, 0, 0);
+        //joint.connectedAnchor = new Vector3(0, 0, 0);
         joint.enableCollision = false;
         joint.enablePreprocessing = true;
         joint.xMotion = ConfigurableJointMotion.Locked;
@@ -109,7 +119,15 @@ public class snapScript : MonoBehaviour {
         joint.projectionAngle.Equals(0.1f);
         joint.projectionDistance.Equals(0.1f);
         //joint.projectionMode.Equals()
-        
+
+        Rigidbody otherBody = o.GetComponent<Rigidbody>();
+
+
+        otherBody.useGravity = false;
+
+        otherBody.maxAngularVelocity.Equals(10);
+        myParent.GetComponent<Rigidbody>().maxAngularVelocity.Equals(10);
+
 
 
 
@@ -121,6 +139,9 @@ public class snapScript : MonoBehaviour {
         //joint.enableCollision = true;
         joint.breakForce = Mathf.Infinity;
         joint.breakTorque = Mathf.Infinity;
+        
+
+
 
     }
 
