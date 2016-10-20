@@ -9,6 +9,7 @@ public class SphereInteraction : MonoBehaviour {
     private Transform currentPosition;
     private Vector3 tempPosition;
     private bool objectiveReached;
+    public GameObject Platform;
     
     // Use this for initialization
     void Start () {
@@ -27,11 +28,13 @@ public class SphereInteraction : MonoBehaviour {
         }
 
 
-	if(tempPosition.sqrMagnitude > 0.4 && objectiveReached!=true && controller)
+	if(tempPosition.sqrMagnitude > 0.2 && objectiveReached!=true && controller)
        {
             Debug.Log("OBjective reached in sphere");
-            this.RigidBody.velocity = Vector3.one* 200f * Time.fixedDeltaTime;
-            this.RigidBody.useGravity = true;
+            //this.RigidBody.velocity = Vector3.one* 200f * Time.fixedDeltaTime;
+            this.RigidBody.AddForce((Platform.transform.position-transform.position).normalized * 1000000f * Time.smoothDeltaTime);
+            //this.Rigidbody.AddForce((otherObject.transform.position - transform.position).normalized * forceAmount * Time.smoothDeltaTime)
+            //this.RigidBody.useGravity = true;
             objectiveReached = true;
             EndInteraction(controller);
         }

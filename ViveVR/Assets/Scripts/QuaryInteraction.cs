@@ -102,14 +102,16 @@ public class QuaryInteraction : MonoBehaviour {
             hits++;
             isInteracting = true;
             Debug.Log("In quaryInteraction Trigger occured on pickup");
-
         }
 
     }
     private void OnTriggerExit(Collider collider)
     {
-
         Debug.Log("In quaryInteraction Trigger released on pickup");
 
+    }
+    public int returnHits()
+    {
+        return hits;
     }
 }

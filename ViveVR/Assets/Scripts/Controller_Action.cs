@@ -36,15 +36,18 @@ public class Controller_Action : MonoBehaviour
     private bool isInteracting;
     private bool isCube;
 
-
+    private bool isInSphereCollider;
+    SphereInteraction sphereObject;
+    
+    public FireSphere fireSphere;
 
     void Start()
     {
         trackedObject = GetComponent<SteamVR_TrackedObject>();
         isInteracting = false;
         isCube = false;
-
-
+        isInSphereCollider = false;
+       
     }
     void Update()
     {
@@ -63,8 +66,11 @@ public class Controller_Action : MonoBehaviour
             triggerButtonUp = controller.GetPressUp(triggerButton);
         //    triggerButtonPressed = controller.GetPress(triggerButton);
 
-
-
+        if (gripButtonDown)
+        {
+            fireSphere.TriggerShere();
+        }
+        
         if (triggerButtonDown && isInteracting)
         {
             float minDistance = float.MaxValue;
@@ -118,6 +124,11 @@ public class Controller_Action : MonoBehaviour
                 interactingHandle.BeginInteraction(this);
             }
             */
+            else if (isInSphereCollider)
+            {
+                Debug.Log("Enteering a Sphere Cube Interaction");
+                sphereObject.BeginInteraction(this);
+            }
             else
             {
                 foreach (PickInteraction item in objectPickupObject)
@@ -143,19 +154,24 @@ public class Controller_Action : MonoBehaviour
             }
         }
 
-         if (triggerButtonUp && interactingObject !=null)
-         {
-             interactingObject.EndInteraction(this);
-             isInteracting = false;
+        if (triggerButtonUp && interactingObject != null)
+        {
+            interactingObject.EndInteraction(this);
+            isInteracting = false;
             interactingObject = null;
-             Debug.Log("in controllerAction TriggerButton released for cube");
-         }
-         if (triggerButtonUp && pickObject!=null)
+            Debug.Log("in controllerAction TriggerButton released for cube");
+        }
+        if (triggerButtonUp && pickObject != null)
         {
             pickObject.EndInteraction(this);
             isInteracting = false;
             pickObject = null;
             Debug.Log("in controllerAction TriggerButton released for pick up");
+        }
+        if (triggerButtonUp && isInSphereCollider)
+        {
+            sphereObject.EndInteraction(this);
+            isInSphereCollider = false;
         }
         /*  else if (gripButtonUp && interactingHandle != null)
         {
@@ -164,14 +180,17 @@ public class Controller_Action : MonoBehaviour
             Debug.Log("Grip Button released for handle");
         }*/
 
-   }
 
-   private void OnTriggerEnter(Collider collider)
+
+
+    }
+
+    private void OnTriggerEnter(Collider collider)
    {
        CubeInteraction collidedItem = collider.GetComponent<CubeInteraction>();
       // HandleInteraction handleItem = collider.GetComponent<HandleInteraction>();
        PickInteraction pickItem = collider.GetComponent<PickInteraction>();
-        SphereInteraction sphereObject = collider.GetComponent<SphereInteraction>();
+        sphereObject = collider.GetComponent<SphereInteraction>();
       if (collidedItem != null)
        {
             isCube = true;
@@ -179,12 +198,7 @@ public class Controller_Action : MonoBehaviour
            isInteracting = true;
            Debug.Log("In controllerAction OntriggerenterTrigger entered on collider pickup");
        }
-      /* else if(handleItem!=null)
-       {
-           isInteracting = true;
-           handlesHoveringOver.Add(handleItem);
-           Debug.Log("Trigger occured on collider for handle");
-       }*/
+     
         if (pickItem!=null)
         {
             isCube = false;
@@ -195,16 +209,18 @@ public class Controller_Action : MonoBehaviour
 
         if(sphereObject!=null)
         {
-            sphereObject.BeginInteraction(this);
+            isInSphereCollider = true;
+            isInteracting = true;
             Debug.Log("In controllerAction OntriggerenterTrigger entered on collider sphere");
         }
-
-
+        
     }
+
     private void OnTriggerExit(Collider collider)
     {
         PickInteraction pickItem = collider.GetComponent<PickInteraction>();
         CubeInteraction collidedItem = collider.GetComponent<CubeInteraction>();
+        SphereCollider sphereItem = collider.GetComponent<SphereCollider>();
         if (collidedItem != null)
         {
             objectsHoveringOver.Remove(collidedItem);
@@ -215,8 +231,11 @@ public class Controller_Action : MonoBehaviour
             objectPickupObject.Remove(pickItem);
             Debug.Log("In controllerAction OntriggerExit Trigger exited on collider pickup");
         }
+        if (sphereItem != null)
+        {
+            //do nothing
+        }
         
     }
-
-
+    
 }
